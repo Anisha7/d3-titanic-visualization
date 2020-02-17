@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Titanic Data Visualization with D3</h1>
+    <h2>Fare dispersment: passenger (x) v. fare (y) </h2>
+    <svg id="svg" width="500" height="500">
+    </svg>
+
+
+    <script>
+        // **** Helpers ****
+        function makeRandomColor() {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16)
+        }
+
+        function getRandomNumber(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // const data = makeRandomData(11)
+
+        d3.json('./titanic-passengers.json')
+            .then((data) => {
+                const fields = data.map((obj) => obj.fields)
+                console.log(fields)
+                handleData(fields)
+            })
+
+        function handleData(fields) {
+            const data = fields.map(({fare}) => fare)
+            d3.select('#svg')
+            d3.select('#svg')
+            // Style #svg
+            .style('border', '1px solid')
+            // select all <circle>s in #svg
+            .selectAll('circle')
+            .data(data)
+            .enter()
+            // Style all <circle>s in #svg
+            .append('circle')
+            .attr('cx', (d, i) => i * 500 / data.length)
+            .attr('cy', (d, i) => 500 - d*1.5 % 500 - 5)
+            .attr('r', (d) => 5)
+            // random color fn -> https://dev.to/akhil_001/generating-random-color-with-single-line-of-js-code-fhj
+            .attr('fill', (d, i) => makeRandomColor())
+            .attr('opacity', () => Math.random(1))
+            .attr('stroke', () => makeRandomColor())
+            .attr('stroke-width', () => Math.random(6, 20))
+        }
+
+        // handleData(data)
+    </script>
+
+</body>
+
+</html>
